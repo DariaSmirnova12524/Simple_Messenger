@@ -6,30 +6,36 @@ public class Server {
     public static Socket client;
     private static BufferedReader in;
     private static BufferedWriter out;
+    public static String phrase;
     public static void main(String [] args){
-        try{
-            try{
-                server = new ServerSocket(4004);
-                System.out.println("сервер запущен");
-                client = server.accept();
-                try{
-                    in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-                    String phrase = in.readLine();
-                    System.out.println(phrase);
-                    out.write("сервер: вы написали:" + phrase + "\n");
-                    out.flush();
+        while(true) {
+            try {
+                try {
+                    server = new ServerSocket(4004);
+                    System.out.println("сервер запущен");
+                    client = server.accept();
+                    try {
+                        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                        out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                        phrase = in.readLine();
+                        System.out.println(phrase);
+                        out.write("сервер: вы написали:" + phrase + "\n");
+                        out.flush();
+                    } finally {
+                        client.close();
+                        in.close();
+                        out.close();
+                    }
                 } finally {
-                    client.close();
-                    in.close();
-                    out.close();
+                    System.out.println("сервер закрыт");
+                    server.close();
                 }
-            } finally {
-                System.out.println("сервер закрыт");
-                server.close();
+            } catch (IOException e) {
+                System.err.println(e);
             }
-        } catch (IOException e){
-            System.err.println(e);
+            if(phrase.equals(".")){
+                break;
+            }
         }
     }
 }
