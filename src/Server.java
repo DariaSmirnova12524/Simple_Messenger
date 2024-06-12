@@ -8,34 +8,38 @@ public class Server {
     private static BufferedWriter out;
     public static String phrase;
     public static void main(String [] args){
-        while(true) {
+
             try {
-                try {
-                    server = new ServerSocket(4004);
-                    System.out.println("сервер запущен");
-                    client = server.accept();
+                while(true) {
                     try {
-                        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                        out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-                        phrase = in.readLine();
-                        System.out.println(phrase);
-                        out.write("сервер: вы написали:" + phrase + "\n");
-                        out.flush();
+                        server = new ServerSocket(4004);
+                        System.out.println("сервер запущен");
+                        client = server.accept();
+                        try {
+                            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                            out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                            phrase = in.readLine();
+                            System.out.println(phrase);
+                            out.write("сервер: вы написали:" + phrase + "\n");
+                            out.flush();
+                        } finally {
+                            client.close();
+                            in.close();
+                            out.close();
+                        }
+
                     } finally {
-                        client.close();
-                        in.close();
-                        out.close();
+                        System.out.println("сервер закрыт");
+                        server.close();
                     }
-                } finally {
-                    System.out.println("сервер закрыт");
-                    server.close();
+                    if(phrase.equals(".")){
+                        break;
+                    }
                 }
             } catch (IOException e) {
                 System.err.println(e);
             }
-            if(phrase.equals(".")){
-                break;
-            }
-        }
+
+
     }
 }
