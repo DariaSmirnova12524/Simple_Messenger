@@ -12,9 +12,9 @@ public class Server {
     public static void main(String[] args) {
         try {
             try {
+                server = new ServerSocket(4004);
+                System.out.println("сервер запущен");
                 while (true) {
-                    server = new ServerSocket(4004);
-                    System.out.println("сервер запущен");
                     client = server.accept();
                     try {
                         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
