@@ -13,12 +13,12 @@ public class Server  {
     private static ObjectOutput out;
     public static String phrase;
 
-    public static void main(String[] args) throws ClassNotFoundException, NullPointerException{
+    public static void main(String[] args) throws ClassNotFoundException{
         try {
             try {
-                server = new ServerSocket(4004);
                 out = new ObjectOutputStream(client.getOutputStream());
                 in = new ObjectInputStream(client.getInputStream());
+                server = new ServerSocket(4004);
                 SendingMessagesClient message = (SendingMessagesClient) in.readObject();
                 System.out.println("User login 1" + message.getSenderLogin());
                 System.out.println("User login 2" + message.getRecipientLogin());
