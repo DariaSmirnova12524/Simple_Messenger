@@ -1,10 +1,14 @@
+import Messages.SendingMessagesClient;
+
 import java.io.*;
 import java.net.Socket; //импорт
 
 public class Client {
     public static Socket client; //объявление
-    private static BufferedReader in;
-    private static BufferedWriter out;
+    //private static BufferedReader in;
+   // private static BufferedWriter out;
+    private static ObjectInput in;
+    private static ObjectOutput out;
     private static BufferedReader reader;
     public static String phrase;
 
@@ -14,11 +18,15 @@ public class Client {
                 while (true) { //для общения до определенной команды
                     client = new Socket("localhost", 4004);
                     reader = new BufferedReader(new InputStreamReader(System.in));
-                    in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-                    System.out.println("Напишите что-нибудь");
-                    phrase = reader.readLine();
-                    out.write(phrase + "\n");
+                    out = new ObjectOutputStream(client.getOutputStream());
+                    in = new ObjectInputStream(client.getInputStream());
+                    SendingMessagesClient message = new SendingMessagesClient("a","b","hello!");
+                    out.writeObject(message);
+                    //in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    //out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                    //System.out.println("Напишите что-нибудь");
+                    //phrase = reader.readLine();
+                    //out.write(phrase + "\n");
                     out.flush();
                     String serverPhrase = in.readLine();
                     System.out.println(serverPhrase);
