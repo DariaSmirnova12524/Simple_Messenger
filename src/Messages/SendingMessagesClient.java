@@ -1,21 +1,21 @@
 package Messages;
 
 public class SendingMessagesClient extends Request implements java.io.Serializable {
-    public static String senderLogin;
-    public static String recipientLogin;
-    public static String messageText;
+    public String senderLogin;
+    public String recipientLogin;
+    public String messageText;
     public SendingMessagesClient(String login1,String login2,String text){
         senderLogin = login1;
         recipientLogin = login2;
         messageText = text;
     }
-    public static String getSenderLogin(){
+    public String getSenderLogin(){
         return senderLogin;
     }
-    public static String getMessageText() {
+    public String getMessageText() {
         return messageText;
     }
-    public static String getRecipientLogin() {
+    public String getRecipientLogin() {
         return recipientLogin;
     }
 }
