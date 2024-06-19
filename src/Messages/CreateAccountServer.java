@@ -1,5 +1,5 @@
 package Messages;
 
 public class CreateAccountServer extends ServerAnswer{
-    public static String accountCreated;
+    public String accountCreated;
 }

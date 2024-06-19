@@ -1,7 +1,7 @@
 package Messages;
 
 public class SendingFilesClient extends Request{
-    public static String senderLogin;
-    public static String recipientLogin;
-    public static String file;
+    public String senderLogin;
+    public String recipientLogin;
+    public String file;
 }

@@ -1,6 +1,6 @@
 package Messages;
 
 public class SendingFilesServer extends ServerAnswer{
-    public static String fileSent;
+    public String fileSent;
     //public static ErrorServer error;
 }
