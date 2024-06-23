@@ -21,28 +21,28 @@ public class Server {
                     } catch (IOException e) {
                         System.out.println("Сервер не запущен, порт занят");
                     }
-                    while (true) {
                         try {
                             client = server.accept();
                         } catch (IOException e) {
                             System.out.println("клиент не принят");
                         }
                         try {
-                            out = new ObjectOutputStream(client.getOutputStream());
-                            in = new ObjectInputStream(client.getInputStream());
-                            SendingMessagesClient message = (SendingMessagesClient) in.readObject();
-                            text = in.readLine();
-                            System.out.println("User login 1 - " + message.getSenderLogin());
-                            System.out.println("User login 2 - " + message.getRecipientLogin());
-                            System.out.println("Message - " + message.getMessageText());
-                            out.flush();
+                            while (true) {
+                                out = new ObjectOutputStream(client.getOutputStream());
+                                in = new ObjectInputStream(client.getInputStream());
+                                SendingMessagesClient message = (SendingMessagesClient) in.readObject();
+                                text = in.readLine();
+                                System.out.println("User login 1 - " + message.getSenderLogin());
+                                System.out.println("User login 2 - " + message.getRecipientLogin());
+                                System.out.println("Message - " + message.getMessageText());
+                                out.flush();
+                                if (text.equals(".")) {
+                                    break;
+                                }
+                            }
                         } catch (IOException e) {
                             System.out.println("ошибка в чтении сообщения!");
                         }
-                        if (text.equals(".")) {
-                            break;
-                        }
-                    }
                 } finally {
                     client.close();
                     in.close();

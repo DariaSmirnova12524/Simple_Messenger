@@ -9,6 +9,7 @@ public class Client {
     private static ObjectInput in;
     private static ObjectOutput out;
     public static String text;
+    public static SendingMessagesClient message;
 
     public static void main(String[] args) throws EOFException {
         try {
@@ -19,13 +20,18 @@ public class Client {
                     System.out.println("Сервер занят");
                 }
                 try {
+                    out = new ObjectOutputStream(client.getOutputStream());
+                    in = new ObjectInputStream(client.getInputStream());
+
+                } catch (IOException e){
+                    System.out.println("Ошибка в чтении");
+                }
+                try {
                     while (true) {
-                        out = new ObjectOutputStream(client.getOutputStream());
-                        in = new ObjectInputStream(client.getInputStream());
                         System.out.println("Напиши что-нибудь...");
                         Scanner sc = new Scanner(System.in);
                         text = sc.nextLine();
-                        SendingMessagesClient message = new SendingMessagesClient("a", "b", text);
+                        message = new SendingMessagesClient("a", "b", text);
                         System.out.println("User login 1 - " + message.getSenderLogin());
                         System.out.println("User login 2 - " + message.getRecipientLogin());
                         System.out.println("Message - " + message.getMessageText());
@@ -36,6 +42,7 @@ public class Client {
                         }
                     }
                 } catch (IOException e) {
+                    System.err.println(e);
                     System.out.println("Ошибка в сообщении или его выводе");
                 }
             } catch (NullPointerException n) {
