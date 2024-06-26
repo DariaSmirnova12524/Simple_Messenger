@@ -11,54 +11,45 @@ public class Client {
     public static String text;
     public static SendingMessagesClient message;
 
-    public static void main(String[] args) throws EOFException {
+    public static void main(String[] args) throws IOException {
         try {
-            try {
-                try {
-                    client = new Socket("localhost", 4004);
-                } catch (IOException e) {
-                    System.out.println("Сервер занят");
-                }
-                try {
-                    out = new ObjectOutputStream(client.getOutputStream());
-                    in = new ObjectInputStream(client.getInputStream());
+            client = new Socket("localhost", 4004);
+        } catch (IOException e) {
+            System.out.println("Сервер занят");
+        }
+        try {
+            out = new ObjectOutputStream(client.getOutputStream());
+            in = new ObjectInputStream(client.getInputStream());
 
-                } catch (IOException e){
-                    System.out.println("Ошибка в чтении");
+        } catch (IOException e) {
+            System.out.println("Ошибка в чтении");
+        }
+        try {
+            while (true) {
+                System.out.println("Напиши что-нибудь...");
+                Scanner sc = new Scanner(System.in);
+                text = sc.nextLine();
+                message = new SendingMessagesClient("a", "b", text);
+                System.out.println("User login 1 - " + message.getSenderLogin());
+                System.out.println("User login 2 - " + message.getRecipientLogin());
+                System.out.println("Message - " + message.getMessageText());
+                out.writeObject(message);
+                out.flush();
+                if (text.equals(".")) {
+                    break;
                 }
-                try {
-                    while (true) {
-                        System.out.println("Напиши что-нибудь...");
-                        Scanner sc = new Scanner(System.in);
-                        text = sc.nextLine();
-                        message = new SendingMessagesClient("a", "b", text);
-                        System.out.println("User login 1 - " + message.getSenderLogin());
-                        System.out.println("User login 2 - " + message.getRecipientLogin());
-                        System.out.println("Message - " + message.getMessageText());
-                        out.writeObject(message);
-                        out.flush();
-                        if (text.equals(".")) {
-                            break;
-                        }
-                    }
-                } catch (IOException e) {
-                    System.err.println(e);
-                    System.out.println("Ошибка в сообщении или его выводе");
-                }
-            } catch (NullPointerException n) {
-                System.out.println("Клиент не инициализирован");
-            } finally {
-                System.out.println("клиент закрыт");
-                client.close();
-                in.close();
-                out.close();
             }
         } catch (IOException e) {
             System.err.println(e);
-        } catch (NullPointerException e) {
-            System.out.println("Клиент не инициализирован!");
+            System.out.println("Ошибка в сообщении или его выводе");
+        } catch (NullPointerException n) {
+            System.out.println("Клиент не инициализирован");
+        } finally {
+            System.out.println("клиент закрыт");
+            client.close();
+            in.close();
+            out.close();
         }
-
     }
 
 }

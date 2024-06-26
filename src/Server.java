@@ -11,51 +11,41 @@ public class Server {
     private static ObjectOutput out;
     public static String text;
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
         try {
-            try {
-                try {
-                    try {
-                        server = new ServerSocket(4004);
-                        System.out.println("сервер запущен");
-                    } catch (IOException e) {
-                        System.out.println("Сервер не запущен, порт занят");
-                    }
-                        try {
-                            client = server.accept();
-                        } catch (IOException e) {
-                            System.out.println("клиент не принят");
-                        }
-                        try {
-                            while (true) {
-                                out = new ObjectOutputStream(client.getOutputStream());
-                                in = new ObjectInputStream(client.getInputStream());
-                                SendingMessagesClient message = (SendingMessagesClient) in.readObject();
-                                text = in.readLine();
-                                System.out.println("User login 1 - " + message.getSenderLogin());
-                                System.out.println("User login 2 - " + message.getRecipientLogin());
-                                System.out.println("Message - " + message.getMessageText());
-                                out.flush();
-                                if (text.equals(".")) {
-                                    break;
-                                }
-                            }
-                        } catch (IOException e) {
-                            System.out.println("ошибка в чтении сообщения!");
-                        }
-                } finally {
-                    client.close();
-                    in.close();
-                    out.close();
+            server = new ServerSocket(4004);
+            System.out.println("сервер запущен");
+        } catch (IOException e) {
+            System.out.println("Сервер не запущен, порт занят");
+        }
+        try {
+            client = server.accept();
+        } catch (IOException e) {
+            System.out.println("клиент не принят");
+        }
+        try {
+            while (true) {
+                out = new ObjectOutputStream(client.getOutputStream());
+                in = new ObjectInputStream(client.getInputStream());
+                SendingMessagesClient message = (SendingMessagesClient) in.readObject();
+                text = in.readLine();
+                System.out.println("User login 1 - " + message.getSenderLogin());
+                System.out.println("User login 2 - " + message.getRecipientLogin());
+                System.out.println("Message - " + message.getMessageText());
+                out.flush();
+                if (text.equals(".")) {
+                    break;
                 }
-
-            } finally {
-                System.out.println("сервер закрыт");
-                server.close();
             }
         } catch (IOException e) {
-            System.err.println(e);
-        }
+            System.out.println("ошибка в чтении сообщения!");
+        } finally {
+            client.close();
+            in.close();
+            out.close();
+            System.out.println("сервер закрыт");
+            server.close();
+        } //раньше файнали было в третьем трае
     }
 }
 /*private static BufferedReader in;
@@ -67,3 +57,6 @@ public class Server {
                     System.out.println(phrase);
                     out.write("сервер: вы написали:" + phrase + "\n");*/
 //
+// } catch (IOException e) {
+//     System.err.println(e);
+//  }
