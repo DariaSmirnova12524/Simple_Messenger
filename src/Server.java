@@ -28,12 +28,12 @@ public class Server {
                 out = new ObjectOutputStream(client.getOutputStream());
                 in = new ObjectInputStream(client.getInputStream());
                 SendingMessagesClient message = (SendingMessagesClient) in.readObject();
-                text = in.readLine();
+                //text = in.readLine();
                 System.out.println("User login 1 - " + message.getSenderLogin());
                 System.out.println("User login 2 - " + message.getRecipientLogin());
                 System.out.println("Message - " + message.getMessageText());
                 out.flush();
-                if (text.equals(".")) {
+                if (message.equals(".")) {
                     break;
                 }
             }
