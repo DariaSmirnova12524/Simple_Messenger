@@ -23,10 +23,14 @@ public class Server {
         } catch (IOException e) {
             System.out.println("клиент не принят");
         }
+        try{
+            out = new ObjectOutputStream(client.getOutputStream());
+            in = new ObjectInputStream(client.getInputStream());
+        } catch (IOException e){
+            System.out.println("ошибка в потоках ввода/вывода");
+        }
         try {
             while (true) {
-                out = new ObjectOutputStream(client.getOutputStream());
-                in = new ObjectInputStream(client.getInputStream());
                 SendingMessagesClient message = (SendingMessagesClient) in.readObject();
                 //text = in.readLine();
                 System.out.println("User login 1 - " + message.getSenderLogin());

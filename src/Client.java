@@ -2,6 +2,7 @@ import Messages.SendingMessagesClient;
 
 import java.io.*;
 import java.net.Socket; //импорт
+import java.net.SocketException;
 import java.util.Scanner;
 
 public class Client {
@@ -35,7 +36,7 @@ public class Client {
                 System.out.println("Message - " + message.getMessageText());
                 out.writeObject(message);
                 out.flush();
-                if (text.equals(".")) {
+                if (text.equals("выход")) {
                     break;
                 }
             }
